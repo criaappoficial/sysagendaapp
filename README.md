@@ -1,36 +1,85 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SysAgenda - Sistema Local de Agendamento
 
-## Getting Started
+SysAgenda é um sistema web moderno, robusto e totalmente local, desenvolvido para criar, organizar e compartilhar reuniões.
+Ideal para gerenciar a própria agenda sem depender de serviços externos na nuvem, garantindo total privacidade, rapidez e controle dos dados.
 
-First, run the development server:
+## Funcionalidades Principais
 
+*   **Gestão de Reuniões**: Crie reuniões Presenciais, Online ou Híbridas rapidamente.
+*   **Convites via WhatsApp**: Geração automática de textos prontos para WhatsApp contendo link da reunião, pauta, horário e participantes.
+*   **Gestão de Contatos e Empresas**: Cadastre facilmente pessoas e as associe às reuniões.
+*   **Categorias Customizadas**: Identifique reuniões usando cores para melhor organização visual.
+*   **Dashboard Inteligente**: Veja as reuniões de hoje, resumos da semana e sua próxima reunião.
+*   **Totalmente Local**: Banco de dados SQLite salvo diretamente na pasta `/database`, sem necessidade de APIs ou hospedagens externas.
+
+## Requisitos
+
+*   [Node.js](https://nodejs.org/en) (v20+)
+*   NPM (v10+)
+
+## Instalação
+
+1.  Baixe ou clone o repositório.
+2.  Abra o terminal na pasta raiz do projeto.
+3.  Instale as dependências:
+    ```bash
+    npm install
+    ```
+
+## Configuração do Banco de Dados Local (SQLite)
+
+O projeto usa SQLite via Prisma ORM.
+
+1.  Para criar as tabelas do banco de dados na pasta `/database/meetings.db`:
+    ```bash
+    npm run db:push
+    ```
+
+2.  Para inicializar os dados padrões (Categorias base, configurações do sistema):
+    ```bash
+    npm run db:seed
+    ```
+
+## Executando o Sistema
+
+Para rodar o projeto localmente em ambiente de desenvolvimento, utilize:
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+O sistema ficará disponível em [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Comandos Disponíveis
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+*   `npm run dev` - Inicia o servidor local de desenvolvimento.
+*   `npm run build` - Gera a build otimizada de produção.
+*   `npm start` - Roda o servidor Next.js de produção.
+*   `npm run db:push` - Aplica alterações de esquema no SQLite de forma sincronizada.
+*   `npm run db:seed` - Cria dados iniciais.
+*   `npm test` - Executa a suíte de testes unitários local (se implementado).
 
-## Learn More
+## Estrutura do Projeto
 
-To learn more about Next.js, take a look at the following resources:
+*   `/database` - Contém o arquivo `meetings.db` com todas as suas informações locais.
+*   `/prisma` - Configuração do Schema do Prisma e Seed.
+*   `/src/actions` - Lógica de backend isolada usando Next.js Server Actions.
+*   `/src/app` - Páginas do frontend (Dashboard, Reuniões, Contatos, Configurações, Compartilhar).
+*   `/src/components` - Componentes visuais isolados (Formulário, Sidebar, etc).
+*   `/src/schemas` - Regras de validação seguras usando Zod.
+*   `/src/lib` - Utilitários (como manipulação de datas e formatação de texto do WhatsApp).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Backup e Restauração
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Todo o seu conteúdo é salvo num arquivo local do SQLite. Para fazer um backup completo:
+1. Copie o arquivo `/database/meetings.db` para um local seguro.
+2. Para restaurar, apenas substitua o arquivo pelo seu backup antes de rodar o comando `npm run dev`.
 
-## Deploy on Vercel
+## Stack Tecnológica
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+*   **Next.js 14+** (App Router)
+*   **React**
+*   **Tailwind CSS v4**
+*   **Prisma ORM** + **SQLite**
+*   **Zod**
+*   **Lucide React** (Ícones)
+*   **date-fns**

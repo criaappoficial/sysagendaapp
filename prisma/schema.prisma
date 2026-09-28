@@ -1,0 +1,124 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:../database/meetings.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Category {
+  id        String    @id @default(cuid())
+  name      String    @unique
+  color     String
+  active    Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  meetings  Meeting[]
+}
+
+model Company {
+  id           String        @id @default(cuid())
+  name         String
+  cnpj         String?
+  website      String?
+  phone        String?
+  email        String?
+  notes        String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  participants Participant[]
+}
+
+model Participant {
+  id                  String               @id @default(cuid())
+  name                String
+  whatsapp            String
+  email               String?
+  companyId           String?
+  company             Company?             @relation(fields: [companyId], references: [id], onDelete: SetNull)
+  role                String?
+  notes               String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  meetingParticipants MeetingParticipant[]
+}
+
+model Meeting {
+  id              String               @id @default(cuid())
+  title           String
+  description     String?
+  categoryId      String
+  category        Category             @relation(fields: [categoryId], references: [id])
+  date            String               // YYYY-MM-DD
+  startTime       String               // HH:mm
+  endTime         String               // HH:mm
+  durationMinutes Int
+  meetingType     String               // PRESENCIAL | ONLINE | HIBRIDA
+  platform        String?              // Google Meet | Zoom | Microsoft Teams | WhatsApp | Outra
+  meetingUrl      String?
+  location        String?
+  address         String?
+  room            String?
+  complement      String?
+  status          String               @default("AGENDADA") // AGENDADA | CONFIRMADA | EM_ANDAMENTO | CONCLUIDA | CANCELADA | REAGENDADA
+  notes           String?
+  reminderMinutes Int?                 @default(15)
+  recurrence      String               @default("NONE") // NONE | DAILY | WEEKLY | BIWEEKLY | MONTHLY
+  parentMeetingId String?
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  participants    MeetingParticipant[]
+  agendaItems     AgendaItem[]
+  history         MeetingHistory[]
+}
+
+model AgendaItem {
+  id        String   @id @default(cuid())
+  meetingId String
+  meeting   Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  text      String
+  itemOrder Int
+  createdAt DateTime @default(now())
+}
+
+model MeetingParticipant {
+  id                 String      @id @default(cuid())
+  meetingId          String
+  meeting            Meeting     @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  participantId     String
+  participant        Participant @relation(fields: [participantId], references: [id], onDelete: Cascade)
+  confirmationStatus String      @default("PENDENTE") // PENDENTE | CONFIRMADO | RECUSADO
+  createdAt          DateTime    @default(now())
+
+  @@unique([meetingId, participantId])
+}
+
+model MeetingHistory {
+  id           String   @id @default(cuid())
+  meetingId    String
+  meeting      Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  action       String   // REAGENDADA | ATUALIZADA | STATUS_ALTERADO | CRIADA
+  oldDate      String?
+  oldStartTime String?
+  oldEndTime   String?
+  newDate      String?
+  newStartTime String?
+  newEndTime   String?
+  createdAt    DateTime @default(now())
+}
+
+model UserSettings {
+  id                     String   @id @default("default")
+  userProfileName        String   @default("Luiz")
+  userWhatsapp           String   @default("")
+  userEmail              String   @default("")
+  userCompany            String   @default("")
+  firstDayOfWeek         Int      @default(0) // 0: Dom, 1: Seg
+  defaultStartTime       String   @default("09:00")
+  defaultDurationMinutes Int      @default(60)
+  defaultCategoryId      String?
+  theme                  String   @default("system")
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+}
