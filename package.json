@@ -5,7 +5,8 @@
   "main": "electron/main.js",
   "scripts": {
     "dev": "concurrently \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
-    "build": "next build",
+    "build": "prisma generate && next build",
+    "postinstall": "prisma generate",
     "postbuild": "cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public",
     "electron:build": "npm run build && electron-builder",
     "electron:dev": "electron .",
