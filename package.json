@@ -2,14 +2,40 @@
   "name": "sysagenda",
   "version": "0.1.0",
   "private": true,
+  "main": "electron/main.js",
   "scripts": {
-    "dev": "next dev",
+    "dev": "concurrently \"next dev\" \"wait-on http://localhost:3000 && electron .\"",
     "build": "next build",
+    "postbuild": "cp -r .next/static .next/standalone/.next/static && cp -r public .next/standalone/public",
+    "electron:build": "npm run build && electron-builder",
+    "electron:dev": "electron .",
     "start": "next start",
     "lint": "eslint",
     "db:push": "prisma db push",
     "db:seed": "prisma db seed",
     "test": "vitest run"
+  },
+  "build": {
+    "appId": "com.sysagenda.app",
+    "productName": "SysAgenda",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "electron/main.js",
+      ".next/standalone/**/*",
+      "database/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": ".next/standalone/node_modules/.prisma/client",
+        "to": ".next/standalone/node_modules/.prisma/client",
+        "filter": ["**/*"]
+      }
+    ],
+    "mac": {
+      "target": ["dmg"]
+    }
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",
@@ -28,13 +54,17 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^10.0.5",
+    "electron": "^44.4.5",
+    "electron-builder": "^26.15.3",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
     "prisma": "^6.19.3",
     "tailwindcss": "^4",
     "tsx": "^4.23.15",
     "typescript": "^5",
-    "vitest": "^5.0.2"
+    "vitest": "^5.0.2",
+    "wait-on": "^9.1.0"
   },
   "prisma": {
     "seed": "npx tsx prisma/seed.ts"

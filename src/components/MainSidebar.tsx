@@ -3,7 +3,16 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { LayoutDashboard, CalendarDays, Users, Building2, Tags, Settings, Menu, X } from 'lucide-react'
+import { 
+  LayoutDashboard, 
+  CalendarDays, 
+  Users, 
+  Building2, 
+  Tags, 
+  Settings, 
+  Menu, 
+  X 
+} from 'lucide-react'
 import { useState } from 'react'
 
 const navigation = [

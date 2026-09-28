@@ -9,7 +9,7 @@ export async function createMeeting(data: MeetingFormData) {
   // Validate data
   const parsed = meetingSchema.safeParse(data)
   if (!parsed.success) {
-    return { error: parsed.error.errors[0].message }
+    return { error: parsed.error.issues[0].message }
   }
   const validated = parsed.data
   
@@ -152,7 +152,7 @@ export async function deleteMeeting(id: string) {
 export async function updateMeeting(id: string, data: MeetingFormData) {
   const parsed = meetingSchema.safeParse(data)
   if (!parsed.success) {
-    return { error: parsed.error.errors[0].message }
+    return { error: parsed.error.issues[0].message }
   }
   const validated = parsed.data
   
