@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { LayoutDashboard, CalendarDays, Users, Building2, Tags, Settings, Plus, Menu, X } from 'lucide-react'
+import { LayoutDashboard, CalendarDays, Users, Building2, Tags, Settings, Menu, X } from 'lucide-react'
 import { useState } from 'react'
 
 const navigation = [
@@ -50,16 +50,7 @@ export function Sidebar() {
           </Link>
         </div>
 
-        <div className="p-4">
-          <Link 
-            href="/meetings/new"
-            onClick={() => setIsOpen(false)}
-            className="w-full flex items-center justify-center gap-2 bg-primary text-primary-foreground py-2.5 px-4 rounded-lg font-medium hover:opacity-90 transition-opacity"
-          >
-            <Plus className="w-4 h-4" />
-            Nova reunião
-          </Link>
-        </div>
+
 
         <nav className="flex-1 overflow-y-auto px-4 py-2 space-y-1">
           {navigation.map((item) => {
