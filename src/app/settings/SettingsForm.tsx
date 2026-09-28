@@ -76,7 +76,7 @@ export function SettingsForm({ settings, categories }: { settings: any, categori
         </div>
       </div>
 
-      <div className="p-6 md:p-8 space-y-6 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="p-6 md:p-8 space-y-6 bg-muted/50">
         <h2 className="text-lg font-semibold text-primary">Preferências de Agendamento</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { Calendar, Plus, Search, Filter } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { formatDateBR, formatTimeRange } from '@/lib/date'
+import { MeetingCheckbox } from './MeetingCheckbox'
 
 export default async function MeetingsListPage({ searchParams }: { searchParams: { [key: string]: string | undefined } }) {
   const categories = await getCategories()
@@ -104,9 +105,8 @@ export default async function MeetingsListPage({ searchParams }: { searchParams:
         {meetings.length > 0 ? (
           <div className="divide-y">
             {meetings.map(meeting => (
-              <Link 
+              <div 
                 key={meeting.id}
-                href={`/meetings/${meeting.id}`}
                 className="flex flex-col md:flex-row md:items-center gap-4 p-4 hover:bg-muted/50 transition-colors group relative"
               >
                 <div 
@@ -114,56 +114,66 @@ export default async function MeetingsListPage({ searchParams }: { searchParams:
                   style={{ backgroundColor: meeting.category.color }}
                 />
                 
-                <div className="flex-1 min-w-0 pl-2">
-                  <div className="flex items-center gap-2 mb-1">
-                    <span 
-                      className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-sm"
-                      style={{ 
-                        color: meeting.category.color,
-                        backgroundColor: `${meeting.category.color}15`
-                      }}
-                    >
-                      {meeting.category.name}
-                    </span>
-                    <span className={cn(
-                      "text-[10px] font-bold uppercase px-2 py-0.5 rounded-sm border",
-                      meeting.status === 'CONFIRMADA' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
-                      meeting.status === 'AGENDADA' ? "bg-blue-50 text-blue-700 border-blue-200" :
-                      "bg-amber-50 text-amber-700 border-amber-200"
-                    )}>
-                      {meeting.status}
-                    </span>
-                  </div>
-                  <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors text-lg truncate">
-                    {meeting.title}
-                  </h3>
-                  
-                  <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
-                    <span>{formatDateBR(meeting.date)}</span>
-                    <span className="w-1 h-1 rounded-full bg-border" />
-                    <span>{formatTimeRange(meeting.startTime, meeting.endTime)}</span>
-                    <span className="w-1 h-1 rounded-full bg-border" />
-                    <span>{meeting.meetingType}</span>
-                  </div>
+                <div className="pl-2 flex items-center h-full">
+                  <MeetingCheckbox meetingId={meeting.id} initialStatus={meeting.status} />
                 </div>
-
-                <div className="pl-2 md:pl-0 flex items-center gap-2">
-                  {meeting.participants.length > 0 && (
-                    <div className="flex -space-x-2">
-                      {meeting.participants.slice(0, 3).map((mp, i) => (
-                        <div key={mp.id} className="w-8 h-8 rounded-full border-2 border-card bg-primary/10 flex items-center justify-center text-primary text-xs font-bold uppercase z-10" style={{ zIndex: 3 - i }}>
-                          {mp.participant.name.charAt(0)}
-                        </div>
-                      ))}
-                      {meeting.participants.length > 3 && (
-                        <div className="w-8 h-8 rounded-full border-2 border-card bg-muted flex items-center justify-center text-muted-foreground text-xs font-bold uppercase z-0">
-                          +{meeting.participants.length - 3}
-                        </div>
-                      )}
+                
+                <Link href={`/meetings/${meeting.id}`} className="flex-1 min-w-0 flex flex-col md:flex-row md:items-center gap-4 cursor-pointer focus:outline-none">
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 mb-1">
+                      <span 
+                        className="text-[10px] font-bold uppercase px-2 py-0.5 rounded-sm"
+                        style={{ 
+                          color: meeting.category.color,
+                          backgroundColor: `${meeting.category.color}15`
+                        }}
+                      >
+                        {meeting.category.name}
+                      </span>
+                      <span className={cn(
+                        "text-[10px] font-bold uppercase px-2 py-0.5 rounded-sm border",
+                        meeting.status === 'CONCLUIDA' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                        meeting.status === 'CONFIRMADA' ? "bg-emerald-50 text-emerald-700 border-emerald-200" :
+                        meeting.status === 'AGENDADA' ? "bg-blue-50 text-blue-700 border-blue-200" :
+                        "bg-amber-50 text-amber-700 border-amber-200"
+                      )}>
+                        {meeting.status}
+                      </span>
                     </div>
-                  )}
-                </div>
-              </Link>
+                    <h3 className={cn(
+                      "font-semibold text-foreground group-hover:text-primary transition-colors text-lg truncate",
+                      meeting.status === 'CONCLUIDA' && "line-through text-muted-foreground"
+                    )}>
+                      {meeting.title}
+                    </h3>
+                    
+                    <div className="flex items-center gap-4 text-sm text-muted-foreground mt-2">
+                      <span>{formatDateBR(meeting.date)}</span>
+                      <span className="w-1 h-1 rounded-full bg-border" />
+                      <span>{formatTimeRange(meeting.startTime, meeting.endTime)}</span>
+                      <span className="w-1 h-1 rounded-full bg-border" />
+                      <span>{meeting.meetingType}</span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    {meeting.participants.length > 0 && (
+                      <div className="flex -space-x-2">
+                        {meeting.participants.slice(0, 3).map((mp, i) => (
+                          <div key={mp.id} className="w-8 h-8 rounded-full border-2 border-card bg-primary/10 flex items-center justify-center text-primary text-xs font-bold uppercase z-10" style={{ zIndex: 3 - i }}>
+                            {mp.participant.name.charAt(0)}
+                          </div>
+                        ))}
+                        {meeting.participants.length > 3 && (
+                          <div className="w-8 h-8 rounded-full border-2 border-card bg-muted flex items-center justify-center text-muted-foreground text-xs font-bold uppercase z-0">
+                            +{meeting.participants.length - 3}
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              </div>
             ))}
           </div>
         ) : (

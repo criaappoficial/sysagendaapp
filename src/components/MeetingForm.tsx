@@ -97,7 +97,7 @@ export function MeetingForm({
     <form onSubmit={handleSubmit} className="divide-y divide-border">
       
       {/* Informações Principais */}
-      <div className="p-6 md:p-8 space-y-6 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="p-6 md:p-8 space-y-6 bg-muted/50">
         <div className="flex items-center gap-2 text-lg font-semibold">
           <Info className="w-5 h-5 text-primary" />
           Informações Principais
@@ -205,7 +205,7 @@ export function MeetingForm({
       </div>
 
       {/* Participantes */}
-      <div className="p-6 md:p-8 space-y-6 bg-slate-50/50 dark:bg-slate-900/50">
+      <div className="p-6 md:p-8 space-y-6 bg-muted/50">
         <div className="flex items-center gap-2 text-lg font-semibold">
           <Users className="w-5 h-5 text-primary" />
           Participantes

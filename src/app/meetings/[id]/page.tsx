@@ -73,7 +73,7 @@ export default async function MeetingDetailsPage({ params }: { params: Promise<{
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50/50 dark:bg-slate-900/50 p-6 rounded-xl border">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-muted/50 p-6 rounded-xl border">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-card rounded-lg shadow-sm border text-primary">
                 <CalendarDays className="w-5 h-5" />
