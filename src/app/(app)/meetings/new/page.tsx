@@ -4,6 +4,8 @@ import { getSettings } from '@/actions/settings.actions'
 import { MeetingForm } from '@/components/MeetingForm'
 import { Calendar } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default async function NewMeetingPage() {
   const categories = await getCategories()
   const contacts = await getParticipants()
