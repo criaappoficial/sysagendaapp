@@ -5,6 +5,8 @@ import Link from 'next/link'
 import { Calendar, CheckCircle2, Clock, CalendarDays, ArrowRight, ExternalLink } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
   const settings = await getSettings()
   const todayStr = getTodayDateString()
