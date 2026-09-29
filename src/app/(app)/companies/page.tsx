@@ -2,6 +2,8 @@ import { getCompanies } from '@/actions/contact.actions'
 import { CompaniesClient } from './CompaniesClient'
 import { Building2 } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default async function CompaniesPage() {
   const companies = await getCompanies()
 

@@ -3,6 +3,8 @@ import { getCompanies } from '@/actions/contact.actions'
 import { ContactsClient } from './ContactsClient'
 import { Users } from 'lucide-react'
 
+export const dynamic = 'force-dynamic'
+
 export default async function ContactsPage() {
   const contacts = await getParticipants()
   const companies = await getCompanies()
